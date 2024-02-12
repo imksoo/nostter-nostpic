@@ -3,7 +3,7 @@ import type { Kind } from 'nostr-tools';
 import type { Media, MediaResult } from './Media';
 import { now } from 'rx-nostr';
 
-export class NostrcheckMe implements Media {
+export class NostPic implements Media {
 	async upload(file: File, type: 'media' | 'avatar' | 'banner' = 'media'): Promise<MediaResult> {
 		const method = 'POST';
 		const url = 'https://nostpic.com/api/v1/media';

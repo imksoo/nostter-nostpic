@@ -11,6 +11,7 @@
 	import { cachedEvents, channelMetadataEventsStore, metadataStore } from '$lib/cache/Events';
 	import { EventItem, Metadata } from '$lib/Items';
 	import { RelayList } from '$lib/RelayList';
+	import { NostPic } from '$lib/media/NostPic';
 	import { NostrcheckMe } from '$lib/media/NostrcheckMe';
 	import { openNoteDialog, replyTo, quotes, intentContent } from '../../../stores/NoteDialog';
 	import { author, pubkey, rom } from '../../../stores/Author';
@@ -73,7 +74,7 @@
 		const file = files[files.length - 1];
 		console.log('[media file]', file);
 		try {
-			const media = new NostrcheckMe();
+			const media = new NostPic();
 			const { url } = await media.upload(file);
 			if (url) {
 				content += (content === '' ? '' : '\n') + url;
