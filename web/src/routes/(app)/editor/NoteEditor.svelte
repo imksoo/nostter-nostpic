@@ -64,6 +64,8 @@
 
 	let onDrag = false;
 
+	$: containsNsec = /nsec1\w{6,}/.test(content);
+
 	const dispatch = createEventDispatcher();
 
 	mediaFiles.subscribe(async (files: File[]) => {
@@ -295,6 +297,9 @@
 		if (content === '' && !confirm($_('editor.post.empty'))) {
 			return;
 		}
+		if (containsNsec && !confirm($_('editor.post.nsec'))) {
+			return;
+		}
 		posting = true;
 
 		const noteComposer = new NoteComposer();
@@ -303,12 +308,12 @@
 				? Kind.ChannelMessage
 				: Kind.Text,
 			Content.replaceNip19(content),
-			$replyTo,
-			emojiTags,
-			$channelIdStore,
-			pubkeys,
-			selectedCustomEmojis,
-			contentWarningReason
+			[
+				...noteComposer.replyTags(content, $replyTo, $channelIdStore, pubkeys),
+				...noteComposer.hashtags(content),
+				...(await noteComposer.emojiTags(content, emojiTags, selectedCustomEmojis)),
+				...noteComposer.contentWarningTags(contentWarningReason)
+			]
 		);
 
 		console.log('[rx-nostr send to]', rxNostr.getAllRelayState());
@@ -459,7 +464,7 @@
 		<Note item={$replyTo} readonly={true} />
 	{/if}
 	<textarea
-		placeholder="What's happening?"
+		placeholder={$_('editor.content.placeholder')}
 		class:dropzone={onDrag}
 		bind:value={content}
 		bind:this={textarea}
@@ -469,7 +474,11 @@
 		on:paste={paste}
 		on:dragover|preventDefault={dragover}
 		on:drop|preventDefault={drop}
+		class:warning={containsNsec}
 	/>
+	{#if containsNsec}
+		<div class="warning">{$_('editor.warning.nsec')}</div>
+	{/if}
 	<div class="actions">
 		<div class="options">
 			<MediaPicker multiple={true} on:pick={mediaPicked} />
@@ -528,6 +537,15 @@
 	textarea {
 		width: 100%;
 		padding: 1rem;
+	}
+
+	textarea.warning {
+		border: 1px solid var(--red);
+	}
+
+	div.warning {
+		font-size: 0.75rem;
+		color: var(--red);
 	}
 
 	.dropzone {

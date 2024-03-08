@@ -8,8 +8,7 @@
 			"bookmarks": "Bookmarks",
 			"channels": "Channels",
 			"profile": "Profile",
-			"preferences": "Preferences",
-			"about": "About nostter"
+			"preferences": "Preferences"
 		}
 	},
 	"pages": {
@@ -45,9 +44,16 @@
 		"saved": "Saved"
 	},
 	"editor": {
+		"content": {
+			"placeholder": "What's happening?"
+		},
+		"warning": {
+			"nsec": "Contains private key (nsec). Never post your private key."
+		},
 		"post": {
 			"button": "Post",
-			"empty": "Do you post empty note?"
+			"empty": "Do you post empty note?",
+			"nsec": "Contains private key (nsec). Are you really going to post it?"
 		}
 	},
 	"gdpr": {
@@ -71,6 +77,20 @@
 	"cancel": "Cancel",
 	"or": "OR",
 	"preferences": {
+		"device": "Device",
+		"shared": "Shared",
+		"theme": {
+			"theme": "Theme",
+			"system": "System",
+			"light": "Light",
+			"dark": "Dark"
+		},
+		"emoji": {
+			"like": "Like emoji",
+			"custom": "Edit custome emoji"
+		},
+		"auto_refresh": "Auto refresh",
+		"media_preview": "Media preview",
 		"uri_scheme": "Open web+nostr: in nostter",
 		"enable_uri_scheme": "Enable",
 		"developer_mode": "Developer mode",
@@ -83,6 +103,7 @@
 		},
 		"trouble_shooting": "Trouble Shooting",
 		"clear_emoji_cache": "Clear emoji cache",
+		"clear_event_cache": "Clear event cache and reload",
 		"reload": "Reload"
 	},
 	"content": {
@@ -110,7 +131,11 @@
 			"failed": "Failed to unbookmark"
 		},
 		"repost": {
+			"button": "Repost",
 			"again": "Repost again?"
+		},
+		"quote": {
+			"button": "Quote"
 		},
 		"reaction": {
 			"again": "Reaction again?"
@@ -128,5 +153,16 @@
 	"error": {
 		"title": "Error",
 		"message": "Not found or something wrong."
+	},
+	"badge": {
+		"accept": "Accept"
+	},
+	"replay": {
+		"title": "Replay",
+		"play": "Play"
+	},
+	"about": {
+		"title": "About nostter",
+		"others": "Others"
 	}
 }

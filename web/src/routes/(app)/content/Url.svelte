@@ -7,6 +7,7 @@
 </script>
 
 <script lang="ts">
+	import { ObserverRender } from '@svelteuidev/core';
 	import { _ } from 'svelte-i18n';
 	import { enablePreview } from '../../../stores/Preference';
 	import Text from './Text.svelte';
@@ -35,22 +36,24 @@
 {#if link === undefined}
 	<Text {text} />
 {:else if link.origin === 'https://twitter.com' || link.origin === 'https://x.com'}
-	{#if preview}
-		<div bind:this={twitterWidget}>
-			<blockquote class="twitter-tweet">
-				<a
-					href={link.href.replace('x.com', 'twitter.com')}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					{link.href}
-				</a>
-			</blockquote>
-		</div>
-	{:else}
-		<ExternalLink {text} {link} />
-		<button on:click={() => (preview = true)}>{$_('content.show')}</button>
-	{/if}
+	<ObserverRender let:visible options={{ unobserveOnEnter: true }}>
+		{#if preview && visible}
+			<div bind:this={twitterWidget}>
+				<blockquote class="twitter-tweet">
+					<a
+						href={link.href.replace('x.com', 'twitter.com')}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{link.href}
+					</a>
+				</blockquote>
+			</div>
+		{:else}
+			<ExternalLink {link}>{text}</ExternalLink>
+			<button on:click={() => (preview = true)}>{$_('content.show')}</button>
+		{/if}
+	</ObserverRender>
 {:else if /\.(apng|avif|gif|jpg|jpeg|png|webp|bmp)$/i.test(link.pathname)}
 	{#if preview}
 		<div>
@@ -59,14 +62,14 @@
 			</a>
 		</div>
 	{:else}
-		<ExternalLink {text} {link} />
+		<ExternalLink {link}>{text}</ExternalLink>
 		<button on:click={() => (preview = true)}>{$_('content.show')}</button>
 	{/if}
 {:else if /\.(mp3|m4a|wav)$/i.test(link.pathname)}
 	{#if preview}
 		<audio src={link.href} controls />
 	{:else}
-		<ExternalLink {text} {link} />
+		<ExternalLink {link}>{text}</ExternalLink>
 		<button on:click={() => (preview = true)}>{$_('content.show')}</button>
 	{/if}
 {:else if /\.(mp4|ogg|webm|ogv|mov|mkv|avi|m4v)$/i.test(link.pathname)}
@@ -76,11 +79,11 @@
 			<video src={link.href} controls />
 		</div>
 	{:else}
-		<ExternalLink {text} {link} />
+		<ExternalLink {link}>{text}</ExternalLink>
 		<button on:click={() => (preview = true)}>{$_('content.show')}</button>
 	{/if}
 {:else}
-	<ExternalLink {text} {link} />
+	<ExternalLink {link}>{text}</ExternalLink>
 {/if}
 
 <style>

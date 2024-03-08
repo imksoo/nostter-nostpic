@@ -233,7 +233,6 @@ html [type='button'],
 /* Remove the default button styling in all browsers */
 button,
 input,
-select,
 textarea {
 	background-color: transparent;
 	border-style: none;
@@ -431,6 +430,7 @@ input[type='password'],
 input[type='search'],
 input[type='tel'],
 input[type='url'],
+input[type='datetime-local'],
 textarea {
 	padding: 0.5rem 0.75rem;
 	border-radius: 0.5rem;
@@ -445,7 +445,8 @@ input[type='number'],
 input[type='password'],
 input[type='search'],
 input[type='tel'],
-input[type='url'] {
+input[type='url'],
+input[type='datetime-local'] {
 	border: var(--default-border);
 }
 

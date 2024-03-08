@@ -9,18 +9,24 @@ import { pool } from '../stores/Pool';
 import { get } from 'svelte/store';
 import { readRelays } from '../stores/Author';
 import type { EventItem } from './Items';
+import { referTags } from './EventHelper';
 
 export class NoteComposer {
-	async compose(
-		kind: number,
+	async compose(kind: number, content: string, tags: string[][]): Promise<Event> {
+		return await Signer.signEvent({
+			kind,
+			content,
+			tags,
+			created_at: now()
+		});
+	}
+
+	replyTags(
 		content: string,
 		$replyTo: EventItem | undefined = undefined,
-		emojiTags: string[][] = [],
 		$channelIdStore: string | undefined = undefined,
-		pubkeys: Set<string> = new Set(),
-		selectedCustomEmojis: Map<string, string> = new Map(),
-		contentWarningReason: string | undefined = undefined
-	): Promise<Event> {
+		pubkeys: Set<string> = new Set()
+	): string[][] {
 		const tags: string[][] = [];
 
 		if ($channelIdStore) {
@@ -41,18 +47,12 @@ export class NoteComposer {
 				}
 			}
 		} else if ($replyTo !== undefined) {
-			if ($replyTo.event.tags.filter((x) => x[0] === 'e').length === 0) {
-				// root
+			const { root } = referTags($replyTo.event);
+			if (root === undefined) {
 				tags.push(['e', $replyTo.event.id, '', 'root']);
 			} else {
-				// reply
+				tags.push(root);
 				tags.push(['e', $replyTo.event.id, '', 'reply']);
-				const root = $replyTo.event.tags.find(
-					([tagName, , , marker]) => tagName === 'e' && marker === 'root'
-				);
-				if (root !== undefined) {
-					tags.push(['e', root[1], '', 'root']);
-				}
 			}
 			pubkeys = new Set([
 				$replyTo.event.pubkey,
@@ -82,8 +82,20 @@ export class NoteComposer {
 		}
 		tags.push(...Array.from(pubkeys).map((pubkey) => ['p', pubkey]));
 
+		return tags;
+	}
+
+	hashtags(content: string): string[][] {
 		const hashtags = Content.findHashtags(content);
-		tags.push(...Array.from(hashtags).map((hashtag) => ['t', hashtag]));
+		return Array.from(hashtags).map((hashtag) => ['t', hashtag]);
+	}
+
+	async emojiTags(
+		content: string,
+		emojiTags: string[][] = [],
+		selectedCustomEmojis: Map<string, string> = new Map()
+	): Promise<string[][]> {
+		const tags: string[][] = [];
 
 		// Custom emojis
 		tags.push(...emojiTags);
@@ -153,6 +165,12 @@ export class NoteComposer {
 				.filter((x): x is string[] => x !== null)
 		);
 
+		return tags;
+	}
+
+	contentWarningTags(contentWarningReason: string | undefined = undefined): string[][] {
+		const tags: string[][] = [];
+
 		// Content Warning
 		if (contentWarningReason !== undefined) {
 			tags.push(
@@ -162,11 +180,6 @@ export class NoteComposer {
 			);
 		}
 
-		return await Signer.signEvent({
-			kind,
-			content,
-			tags,
-			created_at: now()
-		});
+		return tags;
 	}
 }

@@ -12,7 +12,7 @@
 
 	export let items: Item[] = [];
 	export let readonly = false;
-	export let load: () => Promise<void>;
+	export let load: () => Promise<void> = async () => console.debug();
 	export let showLoading = true;
 	export let createdAtFormat: 'auto' | 'time' = 'auto';
 	export let full = false;
@@ -48,6 +48,9 @@
 
 	const viewDetail = async (clickEvent: MouseEvent, nostrEvent: Event) => {
 		let target: HTMLElement | null = clickEvent.target as HTMLElement;
+		if (target.closest('.svelteui-Menu-root') !== null) {
+			return;
+		}
 		if (target) {
 			while (target && !target.classList.contains('timeline')) {
 				if (
@@ -108,7 +111,7 @@
 <svelte:window bind:innerHeight bind:scrollY={$scrollY} />
 
 <ul class="card timeline">
-	{#each items as item (item.event.id)}
+	{#each $scrollY > 0 ? items : items.slice(0, 50) as item (item.event.id)}
 		{#if !isMuteEvent(item.event)}
 			<li
 				class={canTransition ? 'canTransition-post' : ''}

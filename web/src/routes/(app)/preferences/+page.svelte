@@ -19,6 +19,7 @@
 	import RelayStates from './RelayStates.svelte';
 	import WalletConnect from './WalletConnect.svelte';
 	import Reload from './Reload.svelte';
+	import ClearEventCacheAndReload from './ClearEventCacheAndReload.svelte';
 </script>
 
 <svelte:head>
@@ -27,13 +28,13 @@
 
 <h1>{$_('layout.header.preferences')}</h1>
 
-<div class="card">
-	<h2>Device</h2>
+<section class="card">
+	<h2>{$_('preferences.device')}</h2>
 	<div><Theme /></div>
+	<div><AutoRefresh /></div>
 	<div><EnablePreview /></div>
 	<div><Notification /></div>
 	<div><UriScheme /></div>
-	<div><AutoRefresh /></div>
 	<div><WalletConnect /></div>
 	<div><DeveloperMode /></div>
 	{#if $developerMode}
@@ -41,14 +42,18 @@
 		<div><WebStorage /></div>
 		<h3>{$_('preferences.trouble_shooting')}</h3>
 		<div><Reload /></div>
+		<div><ClearEventCacheAndReload /></div>
 		<div><ClearEmojiMartCache /></div>
 	{/if}
-	{#if $author !== undefined}
-		<h2>Shared</h2>
+</section>
+
+{#if $author !== undefined}
+	<section class="card">
+		<h2>{$_('preferences.shared')}</h2>
 		<div><ReactionEmoji /></div>
 		<div>
 			<a href="https://emojito.meme/" target="_blank" rel="noopener noreferrer">
-				Edit custom emojis
+				{$_('preferences.emoji.custom')}
 			</a>
 		</div>
 		<h3>{$_('preferences.mute.mute')}</h3>
@@ -64,14 +69,16 @@
 			<summary>{$_('preferences.mute.words')}</summary>
 			<WordMute />
 		</details>
-	{/if}
+	</section>
+{/if}
 
+<section class="card">
 	<h2>{$_('logout.logout')}</h2>
 	<div><Logout /></div>
-</div>
+</section>
 
 <style>
-	.card > div {
+	div {
 		margin: 1em auto;
 	}
 </style>

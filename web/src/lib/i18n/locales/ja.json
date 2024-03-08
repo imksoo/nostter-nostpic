@@ -8,8 +8,7 @@
 			"bookmarks": "ブックマーク",
 			"channels": "チャンネル",
 			"profile": "プロフィール",
-			"preferences": "設定",
-			"about": "nostter について"
+			"preferences": "設定"
 		}
 	},
 	"pages": {
@@ -45,9 +44,16 @@
 		"saved": "保存しました"
 	},
 	"editor": {
+		"content": {
+			"placeholder": "いまどうしてる？"
+		},
+		"warning": {
+			"nsec": "プライベートキー (nsec) が含まれています。プライベートキーは投稿しないでください。"
+		},
 		"post": {
 			"button": "ポストする",
-			"empty": "空のまま投稿しますか？"
+			"empty": "空のまま投稿しますか？",
+			"nsec": "プライベートキー (nsec) が含まれています。本当に投稿しますか？"
 		}
 	},
 	"gdpr": {
@@ -70,6 +76,20 @@
 	"following": "フォロー中",
 	"or": "または",
 	"preferences": {
+		"device": "端末",
+		"shared": "アカウント",
+		"theme": {
+			"theme": "テーマ",
+			"system": "システム",
+			"light": "ライト",
+			"dark": "ダーク"
+		},
+		"emoji": {
+			"like": "いいねの絵文字",
+			"custom": "カスタム絵文字を編集する"
+		},
+		"auto_refresh": "自動更新",
+		"media_preview": "メディアプレビュー",
 		"uri_scheme": "web+nostr: を nostter で開く",
 		"enable_uri_scheme": "有効化",
 		"developer_mode": "開発者モード",
@@ -82,6 +102,7 @@
 		},
 		"trouble_shooting": "トラブルシューティング",
 		"clear_emoji_cache": "絵文字キャッシュクリア",
+		"clear_event_cache": "イベントキャッシュクリア＆再読み込み",
 		"reload": "再読み込み"
 	},
 	"content": {
@@ -109,7 +130,11 @@
 			"failed": "ブックマークを外せませんでした"
 		},
 		"repost": {
+			"button": "リポスト",
 			"again": "もう一度リポストしますか？"
+		},
+		"quote": {
+			"button": "引用"
 		},
 		"reaction": {
 			"again": "もう一度リアクションしますか？"
@@ -127,5 +152,16 @@
 	"error": {
 		"title": "にゃーん",
 		"message": "ページが見つからなかったかエラーが発生しました。"
+	},
+	"badge": {
+		"accept": "受け取る"
+	},
+	"replay": {
+		"title": "リプレイ",
+		"play": "再生"
+	},
+	"about": {
+		"title": "nostter について",
+		"others": "その他"
 	}
 }

@@ -96,13 +96,12 @@
 </form>
 
 <div>
-	<ExternalLink
-		link={new URL('https://unyu-house.vercel.app/')}
-		text={$_('public_chat.create_channel')}
-	/>
+	<ExternalLink link={new URL('https://unyu-house.vercel.app/')}>
+		{$_('public_chat.create_channel')}
+	</ExternalLink>
 </div>
 
-<TimelineView {items} load={async () => console.debug()} showLoading={false} />
+<TimelineView {items} showLoading={false} />
 
 <style>
 	form,
