@@ -3,6 +3,8 @@
 	import { writable, type Writable } from 'svelte/store';
 	import { _ } from 'svelte-i18n';
 	import { Kind, nip19, type Event as NostrEvent } from 'nostr-tools';
+	import { FileStorageServer } from '$lib/media/FileStorageServer';
+	import { getMediaUploader } from '$lib/media/Media';
 	import { rxNostr } from '$lib/timelines/MainTimeline';
 	import { NoteComposer } from '$lib/NoteComposer';
 	import { channelIdStore, Channel } from '$lib/Channel';
@@ -11,8 +13,6 @@
 	import { cachedEvents, channelMetadataEventsStore, metadataStore } from '$lib/cache/Events';
 	import { EventItem, Metadata } from '$lib/Items';
 	import { RelayList } from '$lib/RelayList';
-	import { NostPic } from '$lib/media/NostPic';
-	import { NostrcheckMe } from '$lib/media/NostrcheckMe';
 	import { openNoteDialog, replyTo, quotes, intentContent } from '../../../stores/NoteDialog';
 	import { author, pubkey, rom } from '../../../stores/Author';
 	import { customEmojiTags } from '../../../stores/CustomEmojis';
@@ -76,13 +76,14 @@
 		const file = files[files.length - 1];
 		console.log('[media file]', file);
 		try {
-			const media = new NostPic();
+			const media = new FileStorageServer(getMediaUploader());
 			const { url } = await media.upload(file);
 			if (url) {
 				content += (content === '' ? '' : '\n') + url;
 			}
 		} catch (error) {
 			console.error('[media upload error]', error);
+			alert($_('media.upload.failed'));
 		}
 	});
 
